@@ -7,4 +7,4 @@
 
 rootProject.name = "monero4j"
 
-include(":rpc-client")
+include(":rpc-client", ":wallet-rpc-client")

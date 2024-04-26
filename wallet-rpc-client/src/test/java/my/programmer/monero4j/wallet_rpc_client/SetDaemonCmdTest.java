@@ -1,4 +1,4 @@
-package my.programmer.monero4j.rpc_client;
+package my.programmer.monero4j.wallet_rpc_client;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
