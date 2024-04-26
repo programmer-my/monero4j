@@ -1,20 +1,50 @@
 package my.programmer.monero4j.rpc_client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import my.programmer.monero4j.rpc_client.request.GenericRequest;
+import my.programmer.monero4j.rpc_client.response.GetBlockCountResponse;
+import okhttp3.*;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class JsonDaemonRpcClient {
-    private RpcConfig config;
     private ObjectMapper objectMapper;
+    private String jsonRpcBaseUrl;
+    private RequestFactory requestFactory;
+    private OkHttpClient httpClient;
 
-    public JsonDaemonRpcClient(RpcConfig config, ObjectMapper objectMapper) {
-        this.config = config;
+    public JsonDaemonRpcClient(RpcConfig config, ObjectMapper objectMapper, OkHttpClient httpClient, RequestFactory requestFactory) throws URISyntaxException {
         this.objectMapper = objectMapper;
+        this.httpClient = httpClient;
+        this.jsonRpcBaseUrl = "http://" + config.getIpAddress() + ":" + config.getPort() + "/json_rpc";
+        this.requestFactory = requestFactory;
     }
 
-    public Object getBlockCount() {
-        return null;
+    public GetBlockCountResponse getBlockCount() throws RpcException {
+        GetBlockCountResponse retval = null;
+        GenericRequest rpcRequest = requestFactory.newGetBlockCountRequest();
+
+        try {
+            String jsonRequest = objectMapper.writeValueAsString(rpcRequest);
+            RequestBody requestBody = RequestBody.create(jsonRequest, MediaType.get("application/json"));
+            Request httpRequest = new Request.Builder().url(jsonRpcBaseUrl).post(requestBody).build();
+
+            try (Response response = httpClient.newCall(httpRequest).execute()) {
+                assert response.body() != null;
+                retval = objectMapper.readValue(response.body().string(), GetBlockCountResponse.class);
+            } catch (IOException e) {
+                throw e;
+            }
+        } catch (JsonProcessingException e) {
+            throw new RpcException("JSON Serialization failed", e);
+        } catch (IOException e) {
+            throw new RuntimeException("HTTP request failed: " + e.getMessage(), e);
+        }
+
+        return retval;
     }
 
     public Object getBlockHashByHeight(int height) {
