@@ -12,7 +12,6 @@ import my.programmer.monero4j.rpc_client.response.GetLastBlockHeaderResponse;
 import okhttp3.*;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 
 public class JsonDaemonRpcClient {
@@ -21,7 +20,7 @@ public class JsonDaemonRpcClient {
     private RequestFactory requestFactory;
     private OkHttpClient httpClient;
 
-    public JsonDaemonRpcClient(RpcConfig config, ObjectMapper objectMapper, OkHttpClient httpClient, RequestFactory requestFactory) throws URISyntaxException {
+    public JsonDaemonRpcClient(RpcConfig config, ObjectMapper objectMapper, OkHttpClient httpClient, RequestFactory requestFactory) {
         this.objectMapper = objectMapper;
         this.httpClient = httpClient;
         this.jsonRpcBaseUrl = "http://" + config.getIpAddress() + ":" + config.getPort() + "/json_rpc";
@@ -107,7 +106,7 @@ public class JsonDaemonRpcClient {
         return null;
     }
 
-    public GetLastBlockHeaderResponse getLastBlockHeader(boolean fillPowHash) {
+    public GetLastBlockHeaderResponse getLastBlockHeader(boolean fillPowHash) throws RpcException {
         GenericRequest rpcRequest = new GenericRequest("1", "2.0", "get_last_block_header");
 
         GetLastBlockHeaderResponse response = executeRequest(rpcRequest, GetLastBlockHeaderResponse.class);
@@ -115,7 +114,7 @@ public class JsonDaemonRpcClient {
         return response;
     }
 
-    public Object getLastBlockHeader() {
+    public GetLastBlockHeaderResponse getLastBlockHeader() throws RpcException {
         return getLastBlockHeader(false);
     }
 
