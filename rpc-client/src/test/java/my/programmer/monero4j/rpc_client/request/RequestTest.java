@@ -53,4 +53,16 @@ public class RequestTest {
         Assertions.assertEquals(1, paramsNode.size());
         Assertions.assertEquals(1337, paramsNode.get(0).asInt());
     }
+
+    @Test
+    public void testGetBlockHeaderByHashRequest() throws JsonProcessingException {
+        GetBlockHeaderByHashRequest request = requestFactory.newGetBlockHeaderByHashRequest("e22cf75f39ae720e8b71b3d120a5ac03f0db50bba6379e2850975b4859190bc6", true);
+        String json = objectMapper.writeValueAsString(request);
+        JsonNode tree = objectMapper.readTree(json);
+
+        Assertions.assertEquals(request.getId(), tree.get("id").asText());
+        Assertions.assertEquals(request.getVersion(), tree.get("jsonrpc").asText());
+        Assertions.assertEquals(request.getHash(), tree.get("hash").asText());
+        Assertions.assertEquals(request.isFillPowHash(), tree.get("fill_pow_hash").asBoolean());
+    }
 }
