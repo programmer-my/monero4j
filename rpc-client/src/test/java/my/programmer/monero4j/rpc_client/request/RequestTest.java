@@ -19,6 +19,16 @@ public class RequestTest {
     }
 
     @Test
+    public void testGenericRequest() throws JsonProcessingException {
+        GenericRequest request = new GenericRequest("1", "2.0", "test_method");
+        String json = objectMapper.writeValueAsString(request);
+        JsonNode tree = objectMapper.readTree(json);
+        Assertions.assertEquals("1", tree.get("id").asText());
+        Assertions.assertEquals("2.0", tree.get("jsonrpc").asText());
+        Assertions.assertEquals("test_method", tree.get("method").asText());
+    }
+
+    @Test
     public void testGetBlockCountRequest() throws JsonProcessingException {
         GenericRequest request = requestFactory.newGetBlockCountRequest();
         String json = objectMapper.writeValueAsString(request);
