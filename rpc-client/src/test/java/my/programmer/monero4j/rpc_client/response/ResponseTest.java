@@ -108,7 +108,7 @@ public class ResponseTest {
         Assertions.assertEquals("", result.getTopHash());
         Assertions.assertFalse(result.isUntrusted());
 
-        GetLastBlockHeaderResponse.Result.BlockHeader blockHeader = result.getBlockHeader();
+        BlockHeader blockHeader = result.getBlockHeader();
         Assertions.assertEquals(5500, blockHeader.getBlockSize());
         Assertions.assertEquals(5500, blockHeader.getBlockWeight());
         Assertions.assertEquals(86164894009456483L, blockHeader.getCumulativeDifficulty());
