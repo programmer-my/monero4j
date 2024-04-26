@@ -3,6 +3,7 @@ package my.programmer.monero4j.rpc_client;
 import my.programmer.monero4j.rpc_client.request.GenericRequest;
 import my.programmer.monero4j.rpc_client.request.GetBlockHashRequest;
 import my.programmer.monero4j.rpc_client.request.GetBlockHeaderByHashRequest;
+import my.programmer.monero4j.rpc_client.request.GetBlockHeaderByHeight;
 
 public class RequestFactory {
     public GenericRequest newGetBlockCountRequest() {
@@ -26,6 +27,16 @@ public class RequestFactory {
         GetBlockHeaderByHashRequest request = new GetBlockHeaderByHashRequest();
         request.setHash(hash);
         request.setFillPowHash(false);
+        return request;
+    }
+
+    // TODO: int or long?
+    public GetBlockHeaderByHeight newGetBlockHeaderByHeight(int height, boolean fillPowHash) {
+        GetBlockHeaderByHeight request = new GetBlockHeaderByHeight();
+        request.setId("1");
+        request.setVersion("2.0");
+        request.setHeight(height);
+        request.setFillPowHash(fillPowHash);
         return request;
     }
 }
