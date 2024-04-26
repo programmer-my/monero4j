@@ -42,4 +42,20 @@ public class ResponseTest {
         Assertions.assertFalse(result.isUntrusted());
 
     }
+
+    @Test
+    public void testGetBlockHashResponse() throws JsonProcessingException {
+        String json = """
+                {
+                  "id": "0",
+                  "jsonrpc": "2.0",
+                  "result": "e22cf75f39ae720e8b71b3d120a5ac03f0db50bba6379e2850975b4859190bc6"
+                }""";
+
+        GetBlockHashResponse response = objectMapper.readValue(json, GetBlockHashResponse.class);
+
+        Assertions.assertEquals("0", response.getId());
+        Assertions.assertEquals("2.0", response.getVersion());
+        Assertions.assertEquals("e22cf75f39ae720e8b71b3d120a5ac03f0db50bba6379e2850975b4859190bc6", response.getResult());
+    }
 }

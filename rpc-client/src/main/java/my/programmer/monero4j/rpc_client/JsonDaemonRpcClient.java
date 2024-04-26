@@ -3,7 +3,9 @@ package my.programmer.monero4j.rpc_client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import my.programmer.monero4j.rpc_client.request.GenericRequest;
+import my.programmer.monero4j.rpc_client.request.GetBlockHashRequest;
 import my.programmer.monero4j.rpc_client.response.GetBlockCountResponse;
+import my.programmer.monero4j.rpc_client.response.GetBlockHashResponse;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -47,8 +49,43 @@ public class JsonDaemonRpcClient {
         return retval;
     }
 
-    public Object getBlockHashByHeight(int height) {
-        return null;
+    public GetBlockHashResponse getBlockHashByHeight(int height) throws RpcException {
+        GetBlockHashRequest rpcRequest = requestFactory.newGetBlockHashRequest(height);
+
+        GetBlockHashResponse response = executeRequest(rpcRequest, GetBlockHashResponse.class);
+
+        return response;
+    }
+
+    /**
+     *
+     * @param rpcRequest
+     * @param respClass
+     * @return R
+     * @param <T> Type of request we are executing
+     * @param <R> Type of response that the request will give
+     */
+    public <T, R> R executeRequest(T rpcRequest, Class<R> respClass) throws RpcException {
+        R retval = null;
+
+        try {
+            String jsonRequest = objectMapper.writeValueAsString(rpcRequest);
+            RequestBody requestBody = RequestBody.create(jsonRequest, MediaType.get("application/json"));
+            Request httpRequest = new Request.Builder().url(jsonRpcBaseUrl).post(requestBody).build();
+
+            try (Response response = httpClient.newCall(httpRequest).execute()) {
+                assert response.body() != null;
+                retval = objectMapper.readValue(response.body().string(), respClass);
+            } catch (IOException e) {
+                throw e;
+            }
+        } catch (JsonProcessingException e) {
+            throw new RpcException("JSON Serialization failed", e);
+        } catch (IOException e) {
+            throw new RpcException("HTTP request failed: " + e.getMessage(), e);
+        }
+
+        return retval;
     }
 
     public Object getBlockTemplate(

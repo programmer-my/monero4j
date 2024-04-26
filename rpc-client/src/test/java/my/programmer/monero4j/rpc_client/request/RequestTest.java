@@ -28,4 +28,19 @@ public class RequestTest {
         Assertions.assertEquals("2.0", tree.get("jsonrpc").asText());
         Assertions.assertEquals("get_block_count", tree.get("method").asText());
     }
+
+    @Test
+    public void testGetBlockHashRequest() throws JsonProcessingException {
+        GetBlockHashRequest request = requestFactory.newGetBlockHashRequest(1337);
+        String json = objectMapper.writeValueAsString(request);
+        JsonNode tree = objectMapper.readTree(json);
+
+        Assertions.assertEquals("0", tree.get("id").asText());
+        Assertions.assertEquals("2.0", tree.get("jsonrpc").asText());
+        Assertions.assertEquals("on_get_block_hash", tree.get("method").asText());
+        JsonNode paramsNode = tree.get("params");
+        Assertions.assertTrue(paramsNode.isArray());
+        Assertions.assertEquals(1, paramsNode.size());
+        Assertions.assertEquals(1337, paramsNode.get(0).asInt());
+    }
 }
