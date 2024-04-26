@@ -17,7 +17,7 @@ class BlockHeader {
     int majorVersion;
     String minerTxHash;
     int minorVersion;
-    int nonce;
+    long nonce;
     int txCount;
     boolean orphan;
     String powHash;
@@ -148,11 +148,11 @@ class BlockHeader {
     }
 
     @JsonProperty("nonce")
-    public int getNonce() {
+    public long getNonce() {
         return nonce;
     }
 
-    public void setNonce(int nonce) {
+    public void setNonce(long nonce) {
         this.nonce = nonce;
     }
 
