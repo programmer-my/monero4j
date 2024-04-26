@@ -127,14 +127,14 @@ public class JsonDaemonRpcClient {
         return response;
     }
 
-    public GetBlockHeaderByHashResponse getBlockHeaderByHash(String hash) {
+    public GetBlockHeaderByHashResponse getBlockHeaderByHash(String hash) throws RpcException {
         return getBlockHeaderByHash(hash, false);
     }
 
     public GetBlockHeaderByHeightResponse getBlockHeaderByHeight(
             int height,
             boolean fillPowHash
-    ) {
+    ) throws RpcException {
         GetBlockHeaderByHeight rpcRequest = requestFactory.newGetBlockHeaderByHeight(height, fillPowHash);
 
         GetBlockHeaderByHeightResponse response = executeRequest(rpcRequest, GetBlockHeaderByHeightResponse.class);
@@ -142,7 +142,7 @@ public class JsonDaemonRpcClient {
         return response;
     }
 
-    public GetBlockHeaderByHeightResponse getBlockHeaderByHeight(int height) {
+    public GetBlockHeaderByHeightResponse getBlockHeaderByHeight(int height) throws RpcException {
         return getBlockHeaderByHeight(height, false);
     }
 
