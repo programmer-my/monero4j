@@ -3,6 +3,7 @@ group = "my.programmer"
 
 plugins {
     java
+    jacoco
 }
 
 repositories {
@@ -19,4 +20,5 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+    finalizedBy("jacocoTestReport")
 }
