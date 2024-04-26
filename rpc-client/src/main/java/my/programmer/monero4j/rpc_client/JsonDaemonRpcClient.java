@@ -6,6 +6,7 @@ import my.programmer.monero4j.rpc_client.request.GenericRequest;
 import my.programmer.monero4j.rpc_client.request.GetBlockHashRequest;
 import my.programmer.monero4j.rpc_client.response.GetBlockCountResponse;
 import my.programmer.monero4j.rpc_client.response.GetBlockHashResponse;
+import my.programmer.monero4j.rpc_client.response.GetLastBlockHeaderResponse;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -104,8 +105,12 @@ public class JsonDaemonRpcClient {
         return null;
     }
 
-    public Object getLastBlockHeader(boolean fillPowHash) {
-        return null;
+    public GetLastBlockHeaderResponse getLastBlockHeader(boolean fillPowHash) {
+        GenericRequest rpcRequest = new GenericRequest("1", "2.0", "get_last_block_header");
+
+        GetLastBlockHeaderResponse response = executeRequest(rpcRequest, GetLastBlockHeaderResponse.class);
+
+        return response;
     }
 
     public Object getLastBlockHeader() {
