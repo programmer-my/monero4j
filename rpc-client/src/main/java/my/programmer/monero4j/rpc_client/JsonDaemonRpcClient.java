@@ -2,10 +2,7 @@ package my.programmer.monero4j.rpc_client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import my.programmer.monero4j.rpc_client.request.GenericRequest;
-import my.programmer.monero4j.rpc_client.request.GetBlockHashRequest;
-import my.programmer.monero4j.rpc_client.request.GetBlockHeaderByHashRequest;
-import my.programmer.monero4j.rpc_client.request.GetBlockHeaderByHeight;
+import my.programmer.monero4j.rpc_client.request.*;
 import my.programmer.monero4j.rpc_client.response.*;
 import okhttp3.*;
 
@@ -146,15 +143,19 @@ public class JsonDaemonRpcClient {
         return getBlockHeaderByHeight(height, false);
     }
 
-    public Object getBlockHeadersRange(
+    public GetBlockHeadersRangeResponse getBlockHeadersRange(
             int startHeight,
             int endHeight,
             boolean fillPowHash
     ) {
-        return null;
+        GetBlockHeadersRangeRequest rpcRequest = requestFactory.newGetBlockHeadersRangeRequest(startHeight, endHeight, fillPowHash);
+
+        GetBlockHeadersRangeResponse response = executeRequest(rpcRequest, GetBlockHeadersRangeResponse.class);
+
+        return response;
     }
 
-    public Object getBlockHeadersRange(
+    public GetBlockHeadersRangeResponse getBlockHeadersRange(
             int startHeight,
             int endHeight
     ) {

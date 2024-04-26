@@ -133,4 +133,70 @@ public class ResponseTest {
         Assertions.assertEquals("0x34dbd3cabf", blockHeader.getWideDifficulty());
 
     }
+
+    @Test
+    public void testGetBlockHeadersRangeResponse() throws JsonProcessingException {
+        String json = """
+                {
+                  "id": "0",
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "credits": 0,
+                    "headers": [{
+                      "block_size": 301413,
+                      "block_weight": 301413,
+                      "cumulative_difficulty": 13185267971483472,
+                      "cumulative_difficulty_top64": 0,
+                      "depth": 740464,
+                      "difficulty": 134636057921,
+                      "difficulty_top64": 0,
+                      "hash": "86d1d20a40cefcf3dd410ff6967e0491613b77bf73ea8f1bf2e335cf9cf7d57a",
+                      "height": 1545999,
+                      "long_term_weight": 301413,
+                      "major_version": 6,
+                      "miner_tx_hash": "9909c6f8a5267f043c3b2b079fb4eacc49ef9c1dee1c028eeb1a259b95e6e1d9",
+                      "minor_version": 6,
+                      "nonce": 3246403956,
+                      "num_txes": 20,
+                      "orphan_status": false,
+                      "pow_hash": "",
+                      "prev_hash": "0ef6e948f77b8f8806621003f5de24b1bcbea150bc0e376835aea099674a5db5",
+                      "reward": 5025593029981,
+                      "timestamp": 1523002893,
+                      "wide_cumulative_difficulty": "0x2ed7ee6db56750",
+                      "wide_difficulty": "0x1f58ef3541"
+                    },{
+                      "block_size": 13322,
+                      "block_weight": 13322,
+                      "cumulative_difficulty": 13185402687569710,
+                      "cumulative_difficulty_top64": 0,
+                      "depth": 740463,
+                      "difficulty": 134716086238,
+                      "difficulty_top64": 0,
+                      "hash": "b408bf4cfcd7de13e7e370c84b8314c85b24f0ba4093ca1d6eeb30b35e34e91a",
+                      "height": 1546000,
+                      "long_term_weight": 13322,
+                      "major_version": 7,
+                      "miner_tx_hash": "7f749c7c64acb35ef427c7454c45e6688781fbead9bbf222cb12ad1a96a4e8f6",
+                      "minor_version": 7,
+                      "nonce": 3737164176,
+                      "num_txes": 1,
+                      "orphan_status": false,
+                      "pow_hash": "",
+                      "prev_hash": "86d1d20a40cefcf3dd410ff6967e0491613b77bf73ea8f1bf2e335cf9cf7d57a",
+                      "reward": 4851952181070,
+                      "timestamp": 1523002931,
+                      "wide_cumulative_difficulty": "0x2ed80dcb69bf2e",
+                      "wide_difficulty": "0x1f5db457de"
+                    }],
+                    "status": "OK",
+                    "top_hash": "",
+                    "untrusted": false
+                  }
+                }""";
+
+        GetBlockHeadersRangeResponse response = objectMapper.readValue(json, GetBlockHeadersRangeResponse.class);
+
+        // TODO: assertions
+    }
 }

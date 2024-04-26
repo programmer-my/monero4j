@@ -1,9 +1,6 @@
 package my.programmer.monero4j.rpc_client;
 
-import my.programmer.monero4j.rpc_client.request.GenericRequest;
-import my.programmer.monero4j.rpc_client.request.GetBlockHashRequest;
-import my.programmer.monero4j.rpc_client.request.GetBlockHeaderByHashRequest;
-import my.programmer.monero4j.rpc_client.request.GetBlockHeaderByHeight;
+import my.programmer.monero4j.rpc_client.request.*;
 
 public class RequestFactory {
     public GenericRequest newGetBlockCountRequest() {
@@ -37,6 +34,25 @@ public class RequestFactory {
         request.setVersion("2.0");
         request.setHeight(height);
         request.setFillPowHash(fillPowHash);
+        return request;
+    }
+
+    public GetBlockHeadersRangeRequest newGetBlockHeadersRangeRequest(
+            int startHeight,
+            int endHeight,
+            boolean fillPowHash
+    ) {
+        GetBlockHeadersRangeRequest request = new GetBlockHeadersRangeRequest();
+        request.setId("1");
+        request.setVersion("2.0");
+
+        GetBlockHeadersRangeRequest.Params params = new GetBlockHeadersRangeRequest.Params();
+        request.setParams(params);
+
+        params.setStartHeight(startHeight);
+        params.setEndHeight(endHeight);
+        params.setFillPowHash(fillPowHash);
+
         return request;
     }
 }
