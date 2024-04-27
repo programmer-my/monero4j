@@ -83,4 +83,8 @@ public class RequestFactory {
 
         return request;
     }
+
+    public GenericRequest newGetConnectionsRequest() {
+        return new GenericRequest("1", "2.0", "get_connections");
+    }
 }

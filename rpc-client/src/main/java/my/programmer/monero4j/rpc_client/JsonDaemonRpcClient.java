@@ -190,8 +190,13 @@ public class JsonDaemonRpcClient {
         return getBlockByHash(hash, false);
     }
 
-    public Object getConnections() {
-        return null;
+    public GetConnectionsResponse getConnections()
+        throws RpcException {
+        GenericRequest request = requestFactory.newGetConnectionsRequest();
+
+        GetConnectionsResponse response = executeRequest(request, GetConnectionsResponse.class);
+
+        return response;
     }
 
     public Object getInfo() {

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ResponseTest {
@@ -320,5 +322,85 @@ public class ResponseTest {
         var expectedTxHashes = new String[]{"a89e380a44d8dfc64b551baa171447a0f9c9262255be6e8f8ef10896e36e2bf9","0c4d343e416e394ad9cc10b7d2df7b2f39370a554730f75dfcb04944bd62c299"};
         assertArrayEquals(expectedTxHashes, result.getTxHashes().toArray());
         assertFalse(result.isUntrusted());
+    }
+
+    @Test
+    public void testGetConnectionsResponse() throws JsonProcessingException {
+        String json = """
+                {
+                  "id": "0",
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "connections": [{
+                      "address": "51.75.162.171:44741",
+                      "address_type": 1,
+                      "avg_download": 0,
+                      "avg_upload": 1,
+                      "connection_id": "4420a6fcf9c642daaae41400ccfc1fd7",
+                      "current_download": 0,
+                      "current_upload": 1,
+                      "height": 1,
+                      "host": "51.75.162.171",
+                      "incoming": true,
+                      "ip": "51.75.162.171",
+                      "live_time": 9,
+                      "local_ip": false,
+                      "localhost": false,
+                      "peer_id": "ff561b6a65c2838c",
+                      "port": "44741",
+                      "pruning_seed": 0,
+                      "recv_count": 382,
+                      "recv_idle_time": 8,
+                      "rpc_credits_per_hash": 0,
+                      "rpc_port": 0,
+                      "send_count": 15434,
+                      "send_idle_time": 8,
+                      "state": "normal",
+                      "support_flags": 1
+                    }],
+                    "status": "OK",
+                    "untrusted": false
+                  }
+                }""";
+
+        GetConnectionsResponse response = objectMapper.readValue(json, GetConnectionsResponse.class);
+
+        assertEquals("0", response.getId());
+        assertEquals("2.0", response.getVersion());
+
+        GetConnectionsResponse.Result result = response.getResult();
+
+        assertEquals("OK", result.getStatus());
+        assertFalse(result.isUntrusted());
+
+        assertEquals(1, result.getConnections().size());
+
+        GetConnectionsResponse.Connection connection = result.getConnections().get(0);
+
+        assertEquals("51.75.162.171:44741", connection.getAddress());
+        assertEquals(1, connection.getAddressType());
+        assertEquals(0, connection.getAvgDownload());
+        assertEquals(1, connection.getAvgUpload());
+        assertEquals("4420a6fcf9c642daaae41400ccfc1fd7", connection.getConnectionId());
+        assertEquals(0, connection.getCurrentDownload());
+        assertEquals(1, connection.getCurrentUpload());
+        assertEquals(1, connection.getHeight());
+        assertEquals("51.75.162.171", connection.getHost());
+        assertTrue(connection.isIncoming());
+        assertEquals("51.75.162.171", connection.getIp());
+        assertEquals(9, connection.getLiveTime());
+        assertFalse(connection.isLocalIp());
+        assertFalse(connection.isLocalhost());
+        assertEquals("ff561b6a65c2838c", connection.getPeerId());
+        assertEquals("44741", connection.getPort());
+        assertEquals(0, connection.getPruningSeed());
+        assertEquals(382, connection.getRecvCount());
+        assertEquals(8, connection.getRecvIdleTime());
+        assertEquals(0, connection.getRpcCreditsPerHash());
+        assertEquals(0, connection.getRpcPort());
+        assertEquals(15434, connection.getSendCount());
+        assertEquals(8, connection.getSendIdleTime());
+        assertEquals("normal", connection.getState());
+        assertEquals(1, connection.getSupportFlags());
     }
 }
