@@ -1,7 +1,10 @@
 package my.programmer.monero4j.rpc_client.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -263,7 +266,7 @@ public class GetConnectionsResponse {
     }
 
     public static class Result {
-        private List<Connection> connections;
+        private List<Connection> connections = new ArrayList<>();
         private String status;
         private boolean untrusted;
 
@@ -276,6 +279,10 @@ public class GetConnectionsResponse {
 
         @JsonProperty("connections")
         public void setConnections(List<Connection> connections) {
+            if (connections == null) {
+                return;
+            }
+
             this.connections = connections;
         }
 

@@ -403,4 +403,21 @@ public class ResponseTest {
         assertEquals("normal", connection.getState());
         assertEquals(1, connection.getSupportFlags());
     }
+
+    @Test
+    public void testGetConnectionsResponse_ensureConnectionsNotNull() throws JsonProcessingException {
+        String json = """
+                {
+                  "id": "1",
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "status": "OK",
+                    "untrusted": false
+                  }
+                }""";
+
+        GetConnectionsResponse response = objectMapper.readValue(json, GetConnectionsResponse.class);
+
+        assertNotNull(response.getResult().getConnections());
+    }
 }
