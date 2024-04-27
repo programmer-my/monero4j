@@ -3,9 +3,10 @@ package my.programmer.monero4j.rpc_client.response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ResponseTest {
     ObjectMapper objectMapper;
@@ -32,14 +33,14 @@ public class ResponseTest {
 
         GetBlockCountResponse response = objectMapper.readValue(json, GetBlockCountResponse.class);
 
-        Assertions.assertEquals("0", response.getId());
-        Assertions.assertEquals("2.0", response.getVersion());
+        assertEquals("0", response.getId());
+        assertEquals("2.0", response.getVersion());
 
         GetBlockCountResponse.Result result = response.getResult();
 
-        Assertions.assertEquals(993163, result.getCount());
-        Assertions.assertEquals("OK", result.getStatus());
-        Assertions.assertFalse(result.isUntrusted());
+        assertEquals(993163, result.getCount());
+        assertEquals("OK", result.getStatus());
+        assertFalse(result.isUntrusted());
 
     }
 
@@ -54,9 +55,9 @@ public class ResponseTest {
 
         GetBlockHashResponse response = objectMapper.readValue(json, GetBlockHashResponse.class);
 
-        Assertions.assertEquals("0", response.getId());
-        Assertions.assertEquals("2.0", response.getVersion());
-        Assertions.assertEquals("e22cf75f39ae720e8b71b3d120a5ac03f0db50bba6379e2850975b4859190bc6", response.getResult());
+        assertEquals("0", response.getId());
+        assertEquals("2.0", response.getVersion());
+        assertEquals("e22cf75f39ae720e8b71b3d120a5ac03f0db50bba6379e2850975b4859190bc6", response.getResult());
     }
 
     @Test
@@ -99,38 +100,38 @@ public class ResponseTest {
                 """;
 
         GetLastBlockHeaderResponse response = objectMapper.readValue(json, GetLastBlockHeaderResponse.class);
-        Assertions.assertEquals("0", response.getId());
-        Assertions.assertEquals("2.0", response.getVersion());
+        assertEquals("0", response.getId());
+        assertEquals("2.0", response.getVersion());
 
         GetLastBlockHeaderResponse.Result result = response.getResult();
-        Assertions.assertEquals(0, result.getCredits());
-        Assertions.assertEquals("OK", result.getStatus());
-        Assertions.assertEquals("", result.getTopHash());
-        Assertions.assertFalse(result.isUntrusted());
+        assertEquals(0, result.getCredits());
+        assertEquals("OK", result.getStatus());
+        assertEquals("", result.getTopHash());
+        assertFalse(result.isUntrusted());
 
         BlockHeader blockHeader = result.getBlockHeader();
-        Assertions.assertEquals(5500, blockHeader.getBlockSize());
-        Assertions.assertEquals(5500, blockHeader.getBlockWeight());
-        Assertions.assertEquals(86164894009456483L, blockHeader.getCumulativeDifficulty());
-        Assertions.assertEquals(0, blockHeader.getCumulativeDifficultyTop64());
-        Assertions.assertEquals(0, blockHeader.getDepth());
-        Assertions.assertEquals(227026389695L, blockHeader.getDifficulty());
-        Assertions.assertEquals(0, blockHeader.getDifficultyTop64());
-        Assertions.assertEquals("a6ad87cf357a1aac1ee1d7cb0afa4c2e653b0b1ab7d5bf6af310333e43c59dd0", blockHeader.getHash());
-        Assertions.assertEquals(2286454, blockHeader.getHeight());
-        Assertions.assertEquals(5500, blockHeader.getLongTermWeight());
-        Assertions.assertEquals(14, blockHeader.getMajorVersion());
-        Assertions.assertEquals("a474f87de1645ff14c5e90c477b07f9bc86a22fb42909caa0705239298da96d0", blockHeader.getMinerTxHash());
-        Assertions.assertEquals(14, blockHeader.getMinorVersion());
-        Assertions.assertEquals(249602367, blockHeader.getNonce());
-        Assertions.assertEquals(3, blockHeader.getTxCount());
-        Assertions.assertEquals(false, blockHeader.isOrphan());
-        Assertions.assertEquals("", blockHeader.getPowHash());
-        Assertions.assertEquals("fa17fefe1d05da775a61a3dc33d9e199d12af167ef0ab37e52b51e8487b50f25", blockHeader.getPrevHash());
-        Assertions.assertEquals(1181337498013L, blockHeader.getReward());
-        Assertions.assertEquals(1612088597L, blockHeader.getTimestamp());
-        Assertions.assertEquals("0x1321e83bb8af763", blockHeader.getWideCumulativeDifficulty());
-        Assertions.assertEquals("0x34dbd3cabf", blockHeader.getWideDifficulty());
+        assertEquals(5500, blockHeader.getBlockSize());
+        assertEquals(5500, blockHeader.getBlockWeight());
+        assertEquals(86164894009456483L, blockHeader.getCumulativeDifficulty());
+        assertEquals(0, blockHeader.getCumulativeDifficultyTop64());
+        assertEquals(0, blockHeader.getDepth());
+        assertEquals(227026389695L, blockHeader.getDifficulty());
+        assertEquals(0, blockHeader.getDifficultyTop64());
+        assertEquals("a6ad87cf357a1aac1ee1d7cb0afa4c2e653b0b1ab7d5bf6af310333e43c59dd0", blockHeader.getHash());
+        assertEquals(2286454, blockHeader.getHeight());
+        assertEquals(5500, blockHeader.getLongTermWeight());
+        assertEquals(14, blockHeader.getMajorVersion());
+        assertEquals("a474f87de1645ff14c5e90c477b07f9bc86a22fb42909caa0705239298da96d0", blockHeader.getMinerTxHash());
+        assertEquals(14, blockHeader.getMinorVersion());
+        assertEquals(249602367, blockHeader.getNonce());
+        assertEquals(3, blockHeader.getTxCount());
+        assertFalse(blockHeader.isOrphan());
+        assertEquals("", blockHeader.getPowHash());
+        assertEquals("fa17fefe1d05da775a61a3dc33d9e199d12af167ef0ab37e52b51e8487b50f25", blockHeader.getPrevHash());
+        assertEquals(1181337498013L, blockHeader.getReward());
+        assertEquals(1612088597L, blockHeader.getTimestamp());
+        assertEquals("0x1321e83bb8af763", blockHeader.getWideCumulativeDifficulty());
+        assertEquals("0x34dbd3cabf", blockHeader.getWideDifficulty());
 
     }
 
@@ -243,20 +244,20 @@ public class ResponseTest {
                 """;
 
         GetBlockResponse response = objectMapper.readValue(json, GetBlockResponse.class);
-        Assertions.assertEquals("0", response.getId());
-        Assertions.assertEquals("2.0", response.getVersion());
+        assertEquals("0", response.getId());
+        assertEquals("2.0", response.getVersion());
 
         GetBlockResponse.Result result = response.getResult();
-        Assertions.assertEquals("1010c58bab9b06b27bdecfc6cd0a46172d136c08831cf67660377ba992332363228b1b722781e7807e07f502cef8a70101ff92f8a7010180e0a596bb1103d7cbf826b665d7a532c316982dc8dbc24f285cbc18bbcc27c7164cd9b3277a85d034019f629d8b36bd16a2bfce3ea80c31dc4d8762c67165aec21845494e32b7582fe00211000000297a787a000000000000000000000000", result.getBlob());
-        Assertions.assertEquals(0, result.getCredits());
+        assertEquals("1010c58bab9b06b27bdecfc6cd0a46172d136c08831cf67660377ba992332363228b1b722781e7807e07f502cef8a70101ff92f8a7010180e0a596bb1103d7cbf826b665d7a532c316982dc8dbc24f285cbc18bbcc27c7164cd9b3277a85d034019f629d8b36bd16a2bfce3ea80c31dc4d8762c67165aec21845494e32b7582fe00211000000297a787a000000000000000000000000", result.getBlob());
+        assertEquals(0, result.getCredits());
         // TODO: assertion on result.getJson()
-        Assertions.assertEquals("e49b854c5f339d7410a77f2a137281d8042a0ffc7ef9ab24cd670b67139b24cd", result.getMinerTxHash());
-        Assertions.assertEquals("OK", result.getStatus());
-        Assertions.assertEquals("", result.getTopHash());
-        Assertions.assertFalse(result.isUntrusted());
+        assertEquals("e49b854c5f339d7410a77f2a137281d8042a0ffc7ef9ab24cd670b67139b24cd", result.getMinerTxHash());
+        assertEquals("OK", result.getStatus());
+        assertEquals("", result.getTopHash());
+        assertFalse(result.isUntrusted());
 
         BlockHeader header = result.getHeader();
-        Assertions.assertNotNull(header);
+        assertNotNull(header);
 
         // TODO: is it necessary to write assertions on header?
     }
@@ -305,19 +306,19 @@ public class ResponseTest {
                 """;
 
         GetBlockResponse response = objectMapper.readValue(json, GetBlockResponse.class);
-        Assertions.assertEquals("0", response.getId());
-        Assertions.assertEquals("2.0", response.getVersion());
+        assertEquals("0", response.getId());
+        assertEquals("2.0", response.getVersion());
 
         GetBlockResponse.Result result = response.getResult();
-        Assertions.assertEquals("1010d8faa89b06f8a36d0dbe4d27d2f52160000563896048d71067c31e99a3869bf9b7142227bb5328010b02a6f6a70101ffeaf5a70101a08bc8b3bb11036d6713f5aa552a1aaf33baed7591f795b86daf339e51029a9062dfe09f0f909b312b0124d6023d591c4d434000e5e31c6db718a1e96e865939930e90a7042a1cd4cbd202083786a78452fdfc000002a89e380a44d8dfc64b551baa171447a0f9c9262255be6e8f8ef10896e36e2bf90c4d343e416e394ad9cc10b7d2df7b2f39370a554730f75dfcb04944bd62c299", result.getBlob());
-        Assertions.assertEquals(0, result.getCredits());
+        assertEquals("1010d8faa89b06f8a36d0dbe4d27d2f52160000563896048d71067c31e99a3869bf9b7142227bb5328010b02a6f6a70101ffeaf5a70101a08bc8b3bb11036d6713f5aa552a1aaf33baed7591f795b86daf339e51029a9062dfe09f0f909b312b0124d6023d591c4d434000e5e31c6db718a1e96e865939930e90a7042a1cd4cbd202083786a78452fdfc000002a89e380a44d8dfc64b551baa171447a0f9c9262255be6e8f8ef10896e36e2bf90c4d343e416e394ad9cc10b7d2df7b2f39370a554730f75dfcb04944bd62c299", result.getBlob());
+        assertEquals(0, result.getCredits());
         // TODO: assertion on result.getJson()
-        Assertions.assertEquals("dabe07900d3123ed895612f4a151adb3e39681b145f0f85bfee23ea1fe47acf2", result.getMinerTxHash());
-        Assertions.assertEquals("OK", result.getStatus());
-        Assertions.assertEquals("", result.getTopHash());
+        assertEquals("dabe07900d3123ed895612f4a151adb3e39681b145f0f85bfee23ea1fe47acf2", result.getMinerTxHash());
+        assertEquals("OK", result.getStatus());
+        assertEquals("", result.getTopHash());
 
         var expectedTxHashes = new String[]{"a89e380a44d8dfc64b551baa171447a0f9c9262255be6e8f8ef10896e36e2bf9","0c4d343e416e394ad9cc10b7d2df7b2f39370a554730f75dfcb04944bd62c299"};
-        Assertions.assertArrayEquals(expectedTxHashes, result.getTxHashes().toArray());
-        Assertions.assertFalse(result.isUntrusted());
+        assertArrayEquals(expectedTxHashes, result.getTxHashes().toArray());
+        assertFalse(result.isUntrusted());
     }
 }
