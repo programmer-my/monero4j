@@ -55,4 +55,32 @@ public class RequestFactory {
 
         return request;
     }
+
+    public GetBlockByHeightRequest newGetBlockByHeightRequest(int height, boolean fillPowHash) {
+        GetBlockByHeightRequest request = new GetBlockByHeightRequest();
+        request.setId("1");
+        request.setVersion("2.0");
+
+        GetBlockByHeightRequest.Params params = new GetBlockByHeightRequest.Params();
+        request.setParams(params);
+
+        params.setFillPowHash(fillPowHash);
+        params.setHeight(height);
+
+        return request;
+    }
+
+    public GetBlockByHashRequest newGetBlockByHashRequest(String hash, boolean fillPowHash) {
+        GetBlockByHashRequest request = new GetBlockByHashRequest();
+        request.setId("1");
+        request.setVersion("2.0");
+
+        GetBlockByHashRequest.Params params = new GetBlockByHashRequest.Params();
+        request.setParams(params);
+
+        params.setFillPowHash(fillPowHash);
+        params.setHash(hash);
+
+        return request;
+    }
 }

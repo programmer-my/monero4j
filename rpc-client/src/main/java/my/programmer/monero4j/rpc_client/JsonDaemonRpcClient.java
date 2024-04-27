@@ -162,19 +162,32 @@ public class JsonDaemonRpcClient {
         return getBlockHeadersRange(startHeight, endHeight, false);
     }
 
-    public Object getBlock(
-            int height,
-            String hash,
-            boolean fillPowHash
-    ) {
-        return null;
+    public GetBlockResponse getBlockByHeight(int height, boolean fillPowHash)
+        throws RpcException {
+        GetBlockByHeightRequest request = requestFactory.newGetBlockByHeightRequest(height, fillPowHash);
+
+        GetBlockResponse response = executeRequest(request, GetBlockResponse.class);
+
+        return response;
     }
 
-    public Object getBlock(
-            int height,
-            String hash
-    ) {
-        return getBlock(height, hash, false);
+    public GetBlockResponse getBlockByHeight(int height)
+        throws RpcException {
+        return getBlockByHeight(height, false);
+    }
+
+    public GetBlockResponse getBlockByHash(String hash, boolean fillPowHash)
+        throws RpcException {
+        GetBlockByHashRequest request = requestFactory.newGetBlockByHashRequest(hash, fillPowHash);
+
+        GetBlockResponse response = executeRequest(request, GetBlockResponse.class);
+
+        return response;
+    }
+
+    public GetBlockResponse getBlockByHash(String hash)
+        throws RpcException {
+        return getBlockByHash(hash, false);
     }
 
     public Object getConnections() {

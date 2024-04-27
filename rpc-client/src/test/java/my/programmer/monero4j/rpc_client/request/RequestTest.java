@@ -95,4 +95,33 @@ public class RequestTest {
         Assertions.assertEquals(request.getParams().getEndHeight(), paramsTree.get("end_height").asInt());
         Assertions.assertEquals(request.getParams().isFillPowHash(), paramsTree.get("fill_pow_hash").asBoolean());
     }
+
+    @Test
+    public void testGetBlockRequest_byHeight() throws JsonProcessingException {
+        GetBlockByHeightRequest request = requestFactory.newGetBlockByHeightRequest(2751506, false);
+        String json = objectMapper.writeValueAsString(request);
+        JsonNode tree = objectMapper.readTree(json);
+
+        Assertions.assertEquals("1", tree.get("id").asText());
+        Assertions.assertEquals("2.0", tree.get("jsonrpc").asText());
+
+        JsonNode paramsTree = tree.get("params");
+        Assertions.assertEquals(request.getParams().getHeight(), paramsTree.get("height").asInt());
+        Assertions.assertEquals(request.getParams().isFillPowHash(), paramsTree.get("fill_pow_hash").asBoolean());
+    }
+
+    @Test
+    public void testGetBlockRequest_byHash() throws JsonProcessingException {
+        GetBlockByHashRequest request = requestFactory.newGetBlockByHashRequest("86d421322b700166dde2d7eba1cc8600925ef640abf6c0a2cc8ce0d6dd90abfd", false);
+        String json = objectMapper.writeValueAsString(request);
+        JsonNode tree = objectMapper.readTree(json);
+
+        Assertions.assertEquals("1", tree.get("id").asText());
+        Assertions.assertEquals("2.0", tree.get("jsonrpc").asText());
+
+        JsonNode paramsTree = tree.get("params");
+        Assertions.assertEquals(request.getParams().getHash(), paramsTree.get("hash").asText());
+        Assertions.assertTrue(paramsTree.path("height").isMissingNode());
+        Assertions.assertEquals(request.getParams().isFillPowHash(), paramsTree.get("fill_pow_hash").asBoolean());
+    }
 }
