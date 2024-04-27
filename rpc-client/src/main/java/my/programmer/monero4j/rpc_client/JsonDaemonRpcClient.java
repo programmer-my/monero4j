@@ -72,7 +72,8 @@ public class JsonDaemonRpcClient {
 
             try (Response response = httpClient.newCall(httpRequest).execute()) {
                 assert response.body() != null;
-                retval = objectMapper.readValue(response.body().string(), respClass);
+                String responseJson = response.body().string();
+                retval = objectMapper.readValue(responseJson, respClass);
             } catch (IOException e) {
                 throw e;
             }
