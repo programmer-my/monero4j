@@ -1,5 +1,7 @@
 package my.programmer.monero4j.rpc_client;
 
+import com.burgstaller.okhttp.digest.Credentials;
+import com.burgstaller.okhttp.digest.DigestAuthenticator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import my.programmer.monero4j.rpc_client.request.*;
@@ -18,6 +20,15 @@ public class JsonDaemonRpcClient {
     public JsonDaemonRpcClient(RpcConfig config, ObjectMapper objectMapper, OkHttpClient httpClient, RequestFactory requestFactory) {
         this.objectMapper = objectMapper;
         this.httpClient = httpClient;
+        this.jsonRpcBaseUrl = "http://" + config.getIpAddress() + ":" + config.getPort() + "/json_rpc";
+        this.requestFactory = requestFactory;
+    }
+
+    public JsonDaemonRpcClient(RpcConfig config, ObjectMapper objectMapper, OkHttpClient.Builder httpBuilder, RequestFactory requestFactory) {
+        DigestAuthenticator authenticator = new DigestAuthenticator(new Credentials(config.getUsername(), config.getPassword()));
+
+        this.objectMapper = objectMapper;
+        this.httpClient = httpBuilder.authenticator(authenticator).build();
         this.jsonRpcBaseUrl = "http://" + config.getIpAddress() + ":" + config.getPort() + "/json_rpc";
         this.requestFactory = requestFactory;
     }
