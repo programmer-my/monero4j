@@ -72,6 +72,15 @@ public class JsonDaemonRpcClient {
 
             try (Response response = httpClient.newCall(httpRequest).execute()) {
                 assert response.body() != null;
+
+                if (!response.isSuccessful()) {
+                    if (response.code() == 401) {
+                        throw new RpcException(String.format("Authentication failed: %s", response.message()));
+                    }
+
+                    throw new RpcException(String.format("HTTP request failed (%d): %s", response.code(), response.message()));
+                }
+
                 String responseJson = response.body().string();
                 retval = objectMapper.readValue(responseJson, respClass);
             } catch (IOException e) {
