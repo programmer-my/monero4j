@@ -3,6 +3,7 @@ package my.programmer.monero4j.rpc_client;
 import com.burgstaller.okhttp.digest.Credentials;
 import com.burgstaller.okhttp.digest.DigestAuthenticator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import my.programmer.monero4j.rpc_client.request.*;
 import my.programmer.monero4j.rpc_client.response.*;
@@ -11,6 +12,7 @@ import okhttp3.*;
 import java.io.IOException;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class JsonDaemonRpcClient {
     private ObjectMapper objectMapper;
     private String jsonRpcBaseUrl;
@@ -19,6 +21,7 @@ public class JsonDaemonRpcClient {
 
     public JsonDaemonRpcClient(RpcConfig config, ObjectMapper objectMapper, OkHttpClient httpClient, RequestFactory requestFactory) {
         this.objectMapper = objectMapper;
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.httpClient = httpClient;
         this.jsonRpcBaseUrl = "http://" + config.getIpAddress() + ":" + config.getPort() + "/json_rpc";
         this.requestFactory = requestFactory;
@@ -220,8 +223,10 @@ public class JsonDaemonRpcClient {
         return response;
     }
 
-    public Object getInfo() {
-        return null;
+    public GetInfoResponse getInfo() {
+        GenericRequest request = new GenericRequest("1", "2.0", "get_info");
+
+        return executeRequest(request, GetInfoResponse.class);
     }
 
     public Object hardForkInfo() {

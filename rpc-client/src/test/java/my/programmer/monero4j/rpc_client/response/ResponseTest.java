@@ -2,6 +2,7 @@ package my.programmer.monero4j.rpc_client.response;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.StreamReadFeature;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ public class ResponseTest {
         ObjectMapper mapper = new ObjectMapper();
         this.objectMapper = mapper;
         mapper.configure(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION.mappedFeature(), true);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     }
 
     @Test
@@ -419,5 +421,105 @@ public class ResponseTest {
         GetConnectionsResponse response = objectMapper.readValue(json, GetConnectionsResponse.class);
 
         assertNotNull(response.getResult().getConnections());
+    }
+
+    @Test
+    public void testGetInfoResponse() throws JsonProcessingException {
+        String json = """
+                {
+                  "id": "0",
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "adjusted_time": 1612090533,
+                    "alt_blocks_count": 2,
+                    "block_size_limit": 600000,
+                    "block_size_median": 300000,
+                    "block_weight_limit": 600000,
+                    "block_weight_median": 300000,
+                    "bootstrap_daemon_address": "",
+                    "busy_syncing": false,
+                    "credits": 0,
+                    "cumulative_difficulty": 86168732847545368,
+                    "cumulative_difficulty_top64": 0,
+                    "database_size": 34329849856,
+                    "difficulty": 225889137349,
+                    "difficulty_top64": 0,
+                    "free_space": 10795802624,
+                    "grey_peerlist_size": 4999,
+                    "height": 2286472,
+                    "height_without_bootstrap": 2286472,
+                    "incoming_connections_count": 85,
+                    "mainnet": true,
+                    "nettype": "mainnet",
+                    "offline": false,
+                    "outgoing_connections_count": 16,
+                    "rpc_connections_count": 1,
+                    "stagenet": false,
+                    "start_time": 1611915662,
+                    "status": "OK",
+                    "synchronized": true,
+                    "target": 120,
+                    "target_height": 2286464,
+                    "testnet": false,
+                    "top_block_hash": "b92720d8315b96e32020d04e14a0c54cc13e057d4a5beb4501be490d306fdd8f",
+                    "top_hash": "",
+                    "tx_count": 11239803,
+                    "tx_pool_size": 21,
+                    "untrusted": false,
+                    "update_available": false,
+                    "version": "0.17.1.9-release",
+                    "was_bootstrap_ever_used": false,
+                    "white_peerlist_size": 1000,
+                    "wide_cumulative_difficulty": "0x1322201881f9c18",
+                    "wide_difficulty": "0x34980ab2c5"
+                  }
+                }
+                """;
+
+        GetInfoResponse response = objectMapper.readValue(json, GetInfoResponse.class);
+
+        assertEquals("0", response.getId());
+        assertEquals("2.0", response.getVersion());
+
+        GetInfoResponse.Result result = response.getResult();
+
+        assertEquals(1612090533L, result.getAdjustedTime());
+        assertEquals(2, result.getAltBlocksCount());
+        assertEquals(600_000L, result.getBlockWeightLimit());
+        assertEquals(300_000L, result.getBlockWeightMedian());
+        assertEquals("", result.getBootstrapDaemonAddress());
+        assertFalse(result.isBusySyncing());
+        assertEquals(0, result.getCredits());
+        assertEquals(86168732847545368L, result.getCumulativeDifficulty());
+        assertEquals(0, result.getCumulativeDifficultyTop64());
+        assertEquals(34329849856L, result.getDatabaseSize());
+        assertEquals(225889137349L, result.getDifficulty());
+        assertEquals(0, result.getDifficultyTop64());
+        assertEquals(10795802624L, result.getFreeSpace());
+        assertEquals(4999, result.getGreyPeerlistSize());
+        assertEquals(2286472L, result.getHeight());
+        assertEquals(2286472L, result.getHeightWithoutBootstrap());
+        assertEquals(85, result.getIncomingConnectionsCount());
+        assertTrue(result.isMainnet());
+        assertFalse(result.isOffline());
+        assertEquals(16, result.getOutgoingConnectionsCount());
+        assertEquals(1, result.getRpcConnectionsCount());
+        assertFalse(result.isStagenet());
+        assertEquals(1611915662L, result.getStartTime());
+        assertEquals("OK", result.getStatus());
+        assertTrue(result.isSynced());
+        assertEquals(120, result.getTarget());
+        assertEquals(2286464L, result.getTargetHeight());
+        assertFalse(result.isTestnet());
+        assertEquals("b92720d8315b96e32020d04e14a0c54cc13e057d4a5beb4501be490d306fdd8f", result.getTopBlockHash());
+        assertEquals("", result.getTopHash());
+        assertEquals(11239803, result.getTxCount());
+        assertEquals(21, result.getTxPoolSize());
+        assertFalse(result.isUntrusted());
+        assertFalse(result.isUpdateAvailable());
+        assertFalse(result.isBootstrapEverUsed());
+        assertEquals(1000, result.getWhitePeerlistSize());
+        assertEquals("0x1322201881f9c18", result.getWideCumulativeDifficulty());
+        assertEquals("0x34980ab2c5", result.getWideDifficulty());
     }
 }
